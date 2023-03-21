@@ -2,6 +2,8 @@ package desktop;
 
 import static constants.Constants.BOOK_DEPOSITORY;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -16,6 +18,8 @@ public class BasePage {
     WebElement acceptCookie;
 
     WebDriver driver;
+
+    private static final Logger logger = LogManager.getLogger(BasePage.class);
 
     public Map<String, String> pagesNamesMap() {
         Map<String, String> map = new HashMap<>();
@@ -40,6 +44,7 @@ public class BasePage {
     }
 
     public void acceptCookie(){
+        logger.info("There is no popup to accept cookies");
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
         String cookie = javascriptExecutor.executeScript("return document.cookie.includes('ACCEPT_ALL')").toString();
         if(cookie.equals("false")) {

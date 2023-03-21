@@ -13,19 +13,30 @@
     <maven.compiler.target>8</maven.compiler.target>
   </properties>
 
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>bintray-epam-reportportal</id>
+      <name>bintray</name>
+      <url>http://dl.bintray.com/epam/reportportal</url>
+    </repository>
+  </repositories>
+
 
   <dependencies>
 
     <dependency>
       <groupId>io.cucumber</groupId>
       <artifactId>cucumber-java</artifactId>
-      <version>7.11.1</version>
+      <version>6.8.1</version>
     </dependency>
 
     <dependency>
       <groupId>io.cucumber</groupId>
       <artifactId>cucumber-junit</artifactId>
-      <version>7.11.1</version>
+      <version>6.8.1</version>
     </dependency>
 
     <dependency>
@@ -38,6 +49,12 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <version>3.11</version>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.11.0</version>
     </dependency>
 
     <dependency>
@@ -59,5 +76,34 @@
       <version>2.17.1</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/com.epam.reportportal/agent-java-cucumber6 -->
+    <dependency>
+      <groupId>com.epam.reportportal</groupId>
+      <artifactId>agent-java-cucumber6</artifactId>
+      <version>5.1.0-RC-6</version>
+    </dependency>
+
   </dependencies>
+
+   <build>
+     <plugins>
+       <plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-compiler-plugin</artifactId>
+         <version>3.8.1</version>
+         <configuration>
+           <encoding>UTF-8</encoding>
+           <source>1.8</source>
+           <target>1.8</target>
+         </configuration>
+       </plugin>
+       <plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-surefire-plugin</artifactId>
+         <version>3.0.0-M5</version>
+       </plugin>
+     </plugins>
+   </build>
+
 </project>
+

@@ -6,15 +6,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 import desktop.pagefactory.PageFactoryManager;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
 
 public class StepDefinitions {
 
@@ -25,15 +33,14 @@ public class StepDefinitions {
 
     @Before
     public void driverSetUp() {
-        logger.trace("Driver is not set up");
+        logger.warn("Driver is not set up");
         System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
-//        driver = new ChromeDriver();
+        driver = new ChromeDriver();
         driver.manage().window().maximize();
-        logger.debug("Page factory is not created");
+        logger.warn("Page factory is not created");
         pageFactoryManager = new PageFactoryManager(driver);
 
     }
-
 
     @Given("I open Book Depository")
     public void openHomePage() {
@@ -93,11 +100,26 @@ public class StepDefinitions {
     }
 
     @After(order = 99)
-    public void quitDriver() {
+    public void createScreenshot(Scenario scenario) {
+        if(scenario.isFailed()){
+            File tempFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            try {
+                File screenshot = new File("build/screenshots/" + scenario + ".png");
+                FileUtils.copyFile(tempFile, screenshot);
+                System.err.println("Screenshot saved to: " + screenshot.getCanonicalPath());
+                if(screenshot.exists()){
+                    logger.info("screenshot exist");
+                }
+                else {
+                    logger.error("screenshot doesn't exist");
+                }
+            } catch (IOException e) {
+                throw new Error(e);
+            }
+        }
         if (driver != null) {
             driver.quit();
         }
     }
-
 
 }
