@@ -109,6 +109,9 @@ public class StepDefinitions {
                 System.err.println("Screenshot saved to: " + screenshot.getCanonicalPath());
                 if(screenshot.exists()){
                     logger.info("screenshot exist");
+                    String screenshotName = scenario.getName().replaceAll(" ", "_");
+                    byte[] sourcePath = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+                    scenario.attach(sourcePath, "image/png", screenshotName);
                 }
                 else {
                     logger.error("screenshot doesn't exist");
